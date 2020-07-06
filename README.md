@@ -1,4 +1,15 @@
-# sapper-template
+# Chuck Norris Talking
+
+Learning Svelte with Chuck.
+
+- [API](https://api.chucknorris.io/)
+
+## Setup notes:
+
+- use [Svelte Preprocess](https://github.com/sveltejs/svelte-preprocess) for
+  styles.
+
+## Origin; sapper-template
 
 The default [Sapper](https://github.com/sveltejs/sapper) template, available for Rollup and webpack.
 

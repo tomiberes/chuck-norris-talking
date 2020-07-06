@@ -4,12 +4,32 @@ import commonjs from '@rollup/plugin-commonjs';
 import svelte from 'rollup-plugin-svelte';
 import babel from '@rollup/plugin-babel';
 import {terser} from 'rollup-plugin-terser';
+import dotenv from 'dotenv';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
 
+const env = dotenv.config();
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
+
+if (env.error) {
+  console.warn('Cannot parse expected .env file: ', env.error);
+  env.parsed = {};
+}
+
+const envValues = Object.keys(env.parsed).reduce((acc, n) => {
+  acc[`process.env.${n}`] = JSON.stringify(env.parsed[n]);
+
+  return acc;
+}, {});
+
+if (Object.keys(envValues).length > 0) {
+  console.log(
+    "The following variables read from file .env will be replaced using '@rollup/plugin-replace':\n",
+    envValues
+  );
+}
 
 const onwarn = (warning, onwarn) =>
   (warning.code === 'CIRCULAR_DEPENDENCY' &&
@@ -24,6 +44,7 @@ export default {
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        ...envValues,
       }),
       svelte({
         dev,
@@ -77,6 +98,7 @@ export default {
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        ...envValues,
       }),
       svelte({
         generate: 'ssr',
@@ -104,6 +126,7 @@ export default {
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        ...envValues,
       }),
       commonjs(),
       !dev && terser(),
