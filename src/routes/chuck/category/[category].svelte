@@ -1,5 +1,9 @@
 <script context="module">
-  const isApiLess = process.env.APILESS === 'true';
+  import isString from 'lodash/isString';
+
+  // Normalize, ".env" supplies "string" & plain env var supplies "boolean".
+  const apiLess = process.env.APILESS;
+  export const isApiLess = isString(apiLess) ? apiLess === 'true' : apiLess;
 
   export async function preload({params}) {
     if (isApiLess) {

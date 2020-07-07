@@ -5,24 +5,31 @@ import svelte from 'rollup-plugin-svelte';
 import babel from '@rollup/plugin-babel';
 import {terser} from 'rollup-plugin-terser';
 import dotenv from 'dotenv';
+import isNil from 'lodash/isNil';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
 
 const env = dotenv.config();
 const mode = process.env.NODE_ENV;
+const apiLess = process.env.APILESS;
 const dev = mode === 'development';
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
 
 if (env.error) {
-  console.warn('Cannot parse expected .env file: ', env.error);
+  console.warn('Cannot parse expected .env file:\n', env.error);
   env.parsed = {};
 }
 
-const envValues = Object.keys(env.parsed).reduce((acc, n) => {
-  acc[`process.env.${n}`] = JSON.stringify(env.parsed[n]);
+const envValues = Object.keys(env.parsed).reduce(
+  (acc, n) => {
+    acc[`process.env.${n}`] = JSON.stringify(env.parsed[n]);
 
-  return acc;
-}, {});
+    return acc;
+  },
+  {
+    'process.env.APILESS': isNil(apiLess) ? false : apiLess,
+  }
+);
 
 if (Object.keys(envValues).length > 0) {
   console.log(

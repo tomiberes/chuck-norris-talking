@@ -6,7 +6,7 @@
   export let jokes = [];
   export let jokesValues = [];
 
-  $: jokesValues = jokes.map(j => j.value);
+  $: jokesValues = jokes.map((j) => j.value);
 </script>
 
 <ul>
