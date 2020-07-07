@@ -11,6 +11,8 @@
 
 <ul>
   {#each jokesValues as val}
-    <li>{val}</li>
+    <li>
+      <p class="m-6 text-gray-800">{val}</p>
+    </li>
   {/each}
 </ul>

@@ -7,7 +7,7 @@
 
   export async function preload({params}) {
     if (isApiLess) {
-      const res = await this.fetch(`chuck/category/${params.category}.json`);
+      const res = await this.fetch(`category/${params.category}.json`);
       const data = await res.json();
 
       if (res.status === 200) {
@@ -22,7 +22,7 @@
 <script>
   import {stores} from '@sapper/app';
 
-  import ChuckJokes from '../../../components/ChuckJokes.svelte';
+  import ChuckJokes from '../../components/ChuckJokes.svelte';
   import {makeJokes} from '../_jokes';
 
   const {page} = stores();

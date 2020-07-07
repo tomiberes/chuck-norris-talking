@@ -6,8 +6,34 @@ Learning Svelte with Chuck.
 
 ## Setup notes:
 
-- use [Svelte Preprocess](https://github.com/sveltejs/svelte-preprocess) for
-  styles.
+- Verify export:
+
+Install `sirv-cli` for static web server.
+
+```
+npm i -g sirv-cli
+```
+
+Choose whether it should work "APILESS".
+
+```
+export APILESS=[true|false] && yarn export && sirv __sapper__/export
+```
+
+- `dev` npm script is not working as intended, since it critical CSS
+  referenced by `%sapper.styles%` is not beining watched/reloaded in
+  dev mode.
+  Have to use:
+
+```
+yarn tailwind:build && yarn dev
+```
+
+- TODO: Use [Svelte Preprocess](https://github.com/sveltejs/svelte-preprocess)
+  for styles.
+
+- TODO: Investigate, there are some warnings for missing/unexpected
+    `prop` and/or `slot` while in `dev` mode.
 
 ## Origin; sapper-template
 

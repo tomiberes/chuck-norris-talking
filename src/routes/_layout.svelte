@@ -1,22 +1,28 @@
-<script>
-  import Nav from '../components/Nav.svelte';
+<script context="module">
+  import kebabCase from 'lodash/snakeCase';
+  import startCase from 'lodash/startCase';
 
-  export let segment;
+  export async function preload() {
+    const res = await this.fetch('category.json');
+    const json = await res.json();
+
+    return {
+      categories: Array.from(json).map((category) => {
+        return {name: startCase(category), slug: kebabCase(category)};
+      }),
+    };
+  }
 </script>
 
-<style>
-  main {
-    position: relative;
-    max-width: 56em;
-    background-color: white;
-    padding: 2em;
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-</style>
+<script>
+  import ChuckCategories from '../components/ChuckCategories.svelte';
 
-<Nav {segment} />
+  export let categories = [];
+</script>
 
-<main>
+<nav class="border-b">
+  <ChuckCategories {categories} />
+</nav>
+<main class="container mx-auto">
   <slot />
 </main>

@@ -2,10 +2,13 @@
   export let categories = [];
 </script>
 
-<ul>
+<ul class="flex justify-center">
   {#each categories as category}
-    <li>
-      <a rel="prefetch" href="chuck/category/{category.slug}">
+    <li class="m-6">
+      <a
+        class="text-gray-600 hover:text-gray-900"
+        rel="prefetch"
+        href="category/{category.slug}">
         {category.name}
       </a>
     </li>
