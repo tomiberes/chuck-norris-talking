@@ -1,5 +1,5 @@
 <script context="module">
-  const isApiLess = Boolean(process.env.APILESS);
+  const isApiLess = process.env.APILESS === 'true';
 
   export async function preload({params}) {
     if (isApiLess) {
@@ -16,17 +16,21 @@
 </script>
 
 <script>
-  import {onMount} from 'svelte';
+  import {stores} from '@sapper/app';
 
   import ChuckJokes from '../../../components/ChuckJokes.svelte';
+  import {makeJokes} from '../_jokes';
 
-  onMount(() => {
-    if (!isApiLess) {
-      return;
-    }
-  });
-
+  const {page} = stores();
   export let jokes;
+
+  async function handleCategory(category) {
+    jokes = await makeJokes(category);
+  }
+
+  $: if (!isApiLess) {
+    handleCategory($page.params.category);
+  }
 </script>
 
 <ChuckJokes {jokes} />

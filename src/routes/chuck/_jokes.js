@@ -9,7 +9,7 @@ export async function getCategories() {
   return ky(`${API_URL}/categories`).json();
 }
 
-export async function getJoke(category = '') {
+export async function getJokes(category = '') {
   return ky(`${API_URL}/random`, {searchParams: {category}}).json();
 }
 
@@ -18,5 +18,5 @@ export async function makeCategories() {
 }
 
 export async function makeJokes(category) {
-  return Promise.all(Array.from({length: NO_JOKES}, () => getJoke(category)));
+  return Promise.all(Array.from({length: NO_JOKES}, () => getJokes(category)));
 }
